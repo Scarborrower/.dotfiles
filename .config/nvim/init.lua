@@ -1,1 +1,1 @@
-print('jh')
+require('dien')

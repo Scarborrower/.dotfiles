@@ -28,10 +28,14 @@ return {
         local cmp = require('cmp')
 --        local cmp_format = require('lsp-zero').cmp_format()
 --        local cmp_action = require('lsp-zero').cmp_action()
+        local cmp_autopairs = require('nvim-autopairs.completion.cmp')
         local cmp_select = {behavior = cmp.SelectBehavior.Select}
-
-
         cmp.setup({
+
+            cmp.event:on(
+            'confirm_done',
+            cmp_autopairs.on_confirm_done()
+            ),
             preselect = 'item',
             completion = {
                 completeopt = 'menu,menuone,noinsert'
@@ -41,7 +45,7 @@ return {
                 ['<S-Tab>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<Tab>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<C-u>'] = cmp.mapping.scroll_docs(-4),
-                ['<C-d>'] = cmp.mapping.scroll_docs(4),   
+                ['<C-d>'] = cmp.mapping.scroll_docs(4),
             })
         })
 

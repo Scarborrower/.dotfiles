@@ -26,14 +26,20 @@ return {
             },
         })
         local cmp = require('cmp')
-        local cmp_format = require('lsp-zero').cmp_format()
-        local cmp_action = require('lsp-zero').cmp_action()
+--        local cmp_format = require('lsp-zero').cmp_format()
+--        local cmp_action = require('lsp-zero').cmp_action()
+        local cmp_select = {behavior = cmp.SelectBehavior.Select}
 
 
         cmp.setup({
+            preselect = 'item',
+            completion = {
+                completeopt = 'menu,menuone,noinsert'
+            },
             mapping = cmp.mapping.preset.insert({
-                ['<Tab>'] = cmp_action.tab_complete(),
-                ['<S-Tab>'] = cmp_action.select_prev_or_fallback(),
+                ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                ['<S-Tab>'] = cmp.mapping.select_prev_item(cmp_select),
+                ['<Tab>'] = cmp.mapping.select_next_item(cmp_select),
                 ['<C-u>'] = cmp.mapping.scroll_docs(-4),
                 ['<C-d>'] = cmp.mapping.scroll_docs(4),   
             })

@@ -6,9 +6,11 @@
 [[ $- != *i* ]] && return
 
 # Env var
+EDITOR=nvim
 GTK_IM_MODULE=fcitx
 QT_IM_MODULE=fcitx
 XMODIFIERS=@im=fcitx
+RANGER_LOAD_DEFAULT_RC=false
 
 # Alias
 alias ls='ls --color=auto'

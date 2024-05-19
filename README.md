@@ -9,13 +9,13 @@ Ensure having these installed on your system
 ### Git
 
 ```
-pacman -S git
+# pacman -S git
 ```
 
 ### Stow
 
 ```
-pacman -S stow
+# pacman -S stow
 ```
 
 ## Installation
@@ -27,7 +27,7 @@ $ cd .dotfiles
 Use GNU Stow to create symlinks for all/or any dotfile you want.
 
 ```
-$ stow */ #for all of the files
-$ stow */{name} #for any particular config u need
+$ stow ./* #for all of the files
+$ stow ./{dir} #for any particular config u need
 ```
 

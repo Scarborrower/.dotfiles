@@ -9,6 +9,7 @@ return {
         'hrsh7th/nvim-cmp',
         'L3MON4D3/LuaSnip',
     },
+    priority = 999,
 
     config = function()
         local lsp_zero = require('lsp-zero')
@@ -20,7 +21,6 @@ return {
         end)
         require('mason').setup({})
         require('mason-lspconfig').setup({
-            ensure_installed = {'rust_analyzer'},
             handlers = {
                 lsp_zero.default_setup,
             },

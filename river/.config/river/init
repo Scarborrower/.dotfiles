@@ -3,7 +3,8 @@
 riverctl output-layout rivertile
 # Super+Shift+Return to start an instance of alacritty (best term btw)
 
-riverctl map normal Super Return spawn foot
+riverctl map normal Super Return spawn kitty
+riverctl map normal Super+Shift V spawn '/home/alpheratz/.config/river/type_clipboard.sh'
 riverctl map normal None Print spawn 'hyprshot -m output --clipboard-only'
 riverctl map normal Super+Shift Print spawn 'hyprshot -m region --clipboard-only'
 riverctl map normal Super D spawn 'bemenu-run --fn "FiraMono Nerd Font:14" -i -l --fb "#282828" --ff "#ebdbb2" --nb "#282828" --nf "#ebdbb2" --tb "#282828" --hb "#282828" --tf "#fb4934" --hf "#fabd2f" --nf "#ebdbb2" --af "#ebdbb2" --ab "#282828"'
@@ -147,24 +148,24 @@ riverctl input pointer-2821-6488-ASUSTeK_ROG_CHAKRAM_CORE pointer-accel 0
 riverctl keyboard-layout -options caps:escape us
 
 # Exec on start up
-riverctl spawn 'wbg ~/.wallpaper/leaf.png'
+#riverctl spawn 'wbg ~/.wallpaper/leaf.png'
 riverctl spawn dunst
 riverctl spawn fcitx5
 riverctl spawn 'wlsunset -S 06:00 -s 18:00'
+riverctl spawn 'swww-daemon'
 
-#install sandbar to use
-riverctl spawn "$HOME/.config/river/status"
-riverctl spawn "$HOME/.config/river/bar"
+riverctl spawn waybar
+riverctl spawn "$HOME/.config/river/swww.sh /home/alpheratz/.wallpaper"
 
 
 # Set background and border color
 riverctl background-color 0x504945
 riverctl border-color-focused 0x458588
 riverctl border-color-unfocused 0x928374
+riverctl border-width 5
 
 # Set keyboard repeat rate
 riverctl set-repeat 50 300
-
 
 # Make all views with an app-id that starts with "float" and title "foo" start floating.
 riverctl rule-add -app-id 'float*' -title 'steam' float
@@ -176,9 +177,9 @@ riverctl rule-add -app-id "bar" csd
 # River will send the process group of the init executable SIGTERM on exit.
 riverctl default-layout rivertile
 riverctl output-layout rivertile
-rivertile -view-padding 6 -outer-padding 6 &
+rivertile -view-padding 5 -outer-padding 5 &
 
 systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river
-systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
-systemctl --user start pipewire-media-session
+systemctl --user stop pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
+systemctl --user start wireplumber

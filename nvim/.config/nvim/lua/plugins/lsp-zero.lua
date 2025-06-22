@@ -6,6 +6,9 @@ return {
         'williamboman/mason-lspconfig.nvim',
         'neovim/nvim-lspconfig',
         'hrsh7th/cmp-nvim-lsp',
+        'hrsh7th/cmp-nvim-lsp-signature-help',
+        'hrsh7th/cmp-buffer',
+        'hrsh7th/cmp-path',
         'hrsh7th/nvim-cmp',
         'L3MON4D3/LuaSnip',
     },
@@ -13,6 +16,9 @@ return {
 
     config = function()
         local lsp_zero = require('lsp-zero')
+        require("lspconfig").qmlls.setup {
+            cmd = {"qmlls", "-E"}
+        }
 
         lsp_zero.on_attach(function(client, bufnr)
             -- see :help lsp-zero-keybindings

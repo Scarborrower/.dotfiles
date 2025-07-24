@@ -1,43 +1,27 @@
 return {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v3.x',
+    'hrsh7th/nvim-cmp',
     dependencies = {
-        'williamboman/mason.nvim',
-        'williamboman/mason-lspconfig.nvim',
-        'neovim/nvim-lspconfig',
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-nvim-lsp-signature-help',
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-path',
-        'hrsh7th/nvim-cmp',
+        'hrsh7th/cmp-cmdline',
         'L3MON4D3/LuaSnip',
+        'saadparwaiz1/cmp_luasnip'
     },
     priority = 999,
 
     config = function()
-        local lsp_zero = require('lsp-zero')
-        require("lspconfig").qmlls.setup {
-            cmd = {"qmlls", "-E"}
-        }
-
-        lsp_zero.on_attach(function(client, bufnr)
-            -- see :help lsp-zero-keybindings
-            -- to learn the available actions
-            lsp_zero.default_keymaps({buffer = bufnr})
-        end)
-        require('mason').setup({})
-        require('mason-lspconfig').setup({
-            handlers = {
-                lsp_zero.default_setup,
-            },
-        })
         local cmp = require('cmp')
-        --        local cmp_format = require('lsp-zero').cmp_format()
-        --        local cmp_action = require('lsp-zero').cmp_action()
         local cmp_autopairs = require('nvim-autopairs.completion.cmp')
         local cmp_select = {behavior = cmp.SelectBehavior.Select}
         cmp.setup({
-
+            sources = cmp.config.sources({
+                { name = 'nvim_lsp' },
+                { name = 'luasnip' },
+            }, {
+                { name = 'buffer' },
+            }),
             window = {
                 completion = cmp.config.window.bordered(),
                 documentation = cmp.config.window.bordered(),

@@ -3,11 +3,11 @@
 riverctl output-layout rivertile
 # Super+Shift+Return to start an instance of alacritty (best term btw)
 
-riverctl map normal Super Return spawn kitty
-riverctl map normal Super+Shift V spawn '/home/alpheratz/.config/river/type_clipboard.sh'
+riverctl map normal Super Return spawn st
 riverctl map normal None Print spawn 'hyprshot -m output --clipboard-only'
 riverctl map normal Super+Shift Print spawn 'hyprshot -m region --clipboard-only'
-riverctl map normal Super D spawn 'bemenu-run --fn "FiraMono Nerd Font:14" -i -l --fb "#282828" --ff "#ebdbb2" --nb "#282828" --nf "#ebdbb2" --tb "#282828" --hb "#282828" --tf "#fb4934" --hf "#fabd2f" --nf "#ebdbb2" --af "#ebdbb2" --ab "#282828"'
+riverctl map normal Super D spawn 'wmenu-run -i'
+riverctl map normal Super+Shift P spawn 'wlogout'
 
 # Super+Q to close the focused view
 riverctl map normal Super Q close
@@ -100,10 +100,10 @@ riverctl map normal Super Space toggle-float
 riverctl map normal Super F toggle-fullscreen
 
 # Super+{Up,Right,Down,Left} to change layout orientation
-riverctl map normal Super Up    send-layout-cmd rivertile "main-location top"
-riverctl map normal Super Right send-layout-cmd rivertile "main-location right"
-riverctl map normal Super Down  send-layout-cmd rivertile "main-location bottom"
-riverctl map normal Super Left  send-layout-cmd rivertile "main-location left"
+# riverctl map normal Super Up    send-layout-cmd rivertile "main-location top"
+# riverctl map normal Super Right send-layout-cmd rivertile "main-location right"
+# riverctl map normal Super Down  send-layout-cmd rivertile "main-location bottom"
+# riverctl map normal Super Left  send-layout-cmd rivertile "main-location left"
 
 # Declare a passthrough mode. This mode has only a single mapping to return to
 # normal mode. This makes it useful for testing a nested wayland compositor
@@ -123,9 +123,9 @@ do
     riverctl map $mode None XF86Eject spawn 'eject -T'
 
     # Control pulse audio volume with pamixer (https://github.com/cdemoulins/pamixer)
-    riverctl map $mode None XF86AudioRaiseVolume  spawn 'pamixer -i 5'
-    riverctl map $mode None XF86AudioLowerVolume  spawn 'pamixer -d 5'
-    riverctl map $mode None XF86AudioMute         spawn 'pamixer --toggle-mute'
+    riverctl map $mode None XF86AudioRaiseVolume  spawn 'wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+'
+    riverctl map $mode None XF86AudioLowerVolume  spawn 'wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+    riverctl map $mode None XF86AudioMute         spawn 'wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle'
 
     # Control MPRIS aware media players with playerctl (https://github.com/altdesktop/playerctl)
     riverctl map $mode None XF86AudioMedia spawn 'playerctl play-pause'
@@ -177,9 +177,11 @@ riverctl rule-add -app-id "bar" csd
 # River will send the process group of the init executable SIGTERM on exit.
 riverctl default-layout rivertile
 riverctl output-layout rivertile
-rivertile -view-padding 5 -outer-padding 5 &
+rivertile -main-ratio 0.55 -view-padding 5 -outer-padding 5 &
 
-systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+# Import the WAYLAND_DISPLAY env var from sway into the systemd user session.
 dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river
-systemctl --user stop pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
-systemctl --user start wireplumber
+
+# Stop any services that are running, so that they receive the new env var when they restart.
+systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+systemctl --user start pipewire-media-session

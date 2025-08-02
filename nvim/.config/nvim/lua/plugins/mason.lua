@@ -3,6 +3,9 @@ return {
     opts = {},
     dependencies = {
         { "mason-org/mason.nvim", opts = {} },
-        "neovim/nvim-lspconfig",
+        { "neovim/nvim-lspconfig", config = function ()
+            vim.lsp.enable('jdtls')
+        end,
+        ft = "java" }
     },
 }

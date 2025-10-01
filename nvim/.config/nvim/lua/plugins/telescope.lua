@@ -4,6 +4,7 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
     keys = {
         { "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", desc = "Telescope find files" },
+        { "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", desc = "Telescope live grep" },
         { "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<cr>", desc = "Telescope find buffers" },
     },
 }
